@@ -131,7 +131,7 @@ export default function Dashboard() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold">My Notes</h1>
+            <h1 className="text-3xl font-bold dark:text-white">My Notes</h1>
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <Button
@@ -143,7 +143,7 @@ export default function Dashboard() {
                 <User className="w-4 h-4" />
                 Profile
               </Button>
-              <SignOutButton>
+              {/* <SignOutButton>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -152,7 +152,7 @@ export default function Dashboard() {
                   <LogOut className="w-4 h-4" />
                   Sign Out
                 </Button>
-              </SignOutButton>
+              </SignOutButton> */}
               <UserButton
                 appearance={{
                   elements: {

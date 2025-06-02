@@ -106,17 +106,7 @@ export default function AuthPage() {
         {/* Right side - Auth forms */}
         <div className="flex flex-col items-center space-y-6">
           <Card className="w-full max-w-md transition-all duration-300 hover:shadow-lg">
-            <CardHeader className="text-center">
-              <CardTitle className="transition-colors duration-200">
-                {isSignUp ? "Create Account" : "Welcome Back"}
-              </CardTitle>
-              <CardDescription className="transition-colors duration-200">
-                {isSignUp
-                  ? "Sign up to start organizing your notes"
-                  : "Sign in to access your notes"}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-center">
+            <CardContent className="pt-2 flex justify-center">
               {isSignUp ? (
                 <SignUp
                   appearance={{
@@ -141,7 +131,7 @@ export default function AuthPage() {
             </CardContent>
           </Card>
 
-          <div className="text-center">
+          {/* <div className="text-center">
             <p className="text-sm text-gray-600">
               {isSignUp ? "Already have an account?" : "Don't have an account?"}
             </p>
@@ -152,7 +142,7 @@ export default function AuthPage() {
             >
               {isSignUp ? "Sign in instead" : "Sign up for free"}
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
