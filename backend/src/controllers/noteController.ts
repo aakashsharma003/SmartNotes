@@ -27,10 +27,26 @@ export const createNote = async (req: AuthenticatedRequest, res: Response) => {
       return res.status(400).json({ error: "Invalid note type" });
     }
 
+    // Process content based on type
+    const processedContent = content
+      .filter((item: any) => {
+        if (typeof item === "string") {
+          return item.trim() !== "";
+        } else {
+          return item.text && item.text.trim() !== "";
+        }
+      })
+      .map((item: any) => {
+        if (type === "checklist" && typeof item === "string") {
+          return { text: item, isMarked: false };
+        }
+        return item;
+      });
+
     const note = new Note({
       title,
       type,
-      content: content.filter((item: string) => item.trim() !== ""),
+      content: processedContent,
       userId: req.userId,
     });
 
@@ -60,12 +76,28 @@ export const updateNote = async (req: AuthenticatedRequest, res: Response) => {
       return res.status(400).json({ error: "Invalid note type" });
     }
 
+    // Process content based on type
+    const processedContent = content
+      .filter((item: any) => {
+        if (typeof item === "string") {
+          return item.trim() !== "";
+        } else {
+          return item.text && item.text.trim() !== "";
+        }
+      })
+      .map((item: any) => {
+        if (type === "checklist" && typeof item === "string") {
+          return { text: item, isMarked: false };
+        }
+        return item;
+      });
+
     const note = await Note.findOneAndUpdate(
-      { _id: id, userId: req.userId }, // Ensure user can only update their own notes
+      { _id: id, userId: req.userId },
       {
         title,
         type,
-        content: content.filter((item: string) => item.trim() !== ""),
+        content: processedContent,
         updatedAt: new Date(),
       },
       { new: true }
@@ -90,7 +122,7 @@ export const deleteNote = async (req: AuthenticatedRequest, res: Response) => {
       return res.status(400).json({ error: "Invalid note ID" });
     }
 
-    const note = await Note.findOneAndDelete({ _id: id, userId: req.userId }); // Ensure user can only delete their own notes
+    const note = await Note.findOneAndDelete({ _id: id, userId: req.userId });
 
     if (!note) {
       return res.status(404).json({ error: "Note not found" });

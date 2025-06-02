@@ -2,7 +2,7 @@ import mongoose, { Schema, type Document } from "mongoose";
 
 export interface INote extends Document {
   title: string;
-  content: string[];
+  content: (string | { text: string; isMarked: boolean })[];
   type: "bullet" | "checklist";
   userId: string;
   createdAt: Date;
@@ -18,10 +18,21 @@ const NoteSchema = new Schema<INote>(
       maxlength: 200,
     },
     content: {
-      type: [String],
+      type: Schema.Types.Mixed,
       required: true,
       validate: {
-        validator: (v: string[]) => v && v.length > 0,
+        validator: (v: any) => {
+          if (Array.isArray(v) && v.length > 0) {
+            return v.every(
+              (item) =>
+                typeof item === "string" ||
+                (typeof item === "object" &&
+                  typeof item.text === "string" &&
+                  typeof item.isMarked === "boolean")
+            );
+          }
+          return false;
+        },
         message: "Content must have at least one item",
       },
     },

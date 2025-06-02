@@ -31,7 +31,9 @@ export function EditNoteDialog({
 }: EditNoteDialogProps) {
   const [title, setTitle] = useState("");
   const [type, setType] = useState<"bullet" | "checklist">("bullet");
-  const [content, setContent] = useState<string[]>([]);
+  const [content, setContent] = useState<
+    (string | { text: string; isMarked: boolean })[]
+  >([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const noteService = useNoteService();
@@ -40,12 +42,25 @@ export function EditNoteDialog({
     if (note) {
       setTitle(note.title);
       setType(note.type);
-      setContent([...note.content]);
+      // Handle both old string format and new object format
+      const processedContent = note.content.map((item) => {
+        if (typeof item === "string") {
+          return note.type === "checklist"
+            ? { text: item, isMarked: false }
+            : item;
+        }
+        return item;
+      });
+      setContent([...processedContent]);
     }
   }, [note]);
 
   const addContentItem = () => {
-    setContent([...content, ""]);
+    if (type === "checklist") {
+      setContent([...content, { text: "", isMarked: false }]);
+    } else {
+      setContent([...content, ""]);
+    }
   };
 
   const removeContentItem = (index: number) => {
@@ -56,8 +71,28 @@ export function EditNoteDialog({
 
   const updateContentItem = (index: number, value: string) => {
     const newContent = [...content];
-    newContent[index] = value;
+    if (type === "checklist") {
+      if (typeof newContent[index] === "object") {
+        (newContent[index] as { text: string; isMarked: boolean }).text = value;
+      } else {
+        newContent[index] = { text: value, isMarked: false };
+      }
+    } else {
+      newContent[index] = value;
+    }
     setContent(newContent);
+  };
+
+  const toggleChecklistItem = (index: number) => {
+    if (type === "checklist") {
+      const newContent = [...content];
+      if (typeof newContent[index] === "object") {
+        (newContent[index] as { text: string; isMarked: boolean }).isMarked = !(
+          newContent[index] as { text: string; isMarked: boolean }
+        ).isMarked;
+      }
+      setContent(newContent);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,7 +107,9 @@ export function EditNoteDialog({
       return;
     }
 
-    const filteredContent = content.filter((item) => item.trim() !== "");
+    const filteredContent = content.filter((item) =>
+      typeof item === "string" ? item.trim() !== "" : item.text.trim() !== ""
+    );
     if (filteredContent.length === 0) {
       toast({
         title: "Error",
@@ -179,15 +216,43 @@ export function EditNoteDialog({
                     {type === "bullet" ? (
                       <span className="text-muted-foreground">•</span>
                     ) : (
-                      <CheckSquare className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                      <button
+                        type="button"
+                        onClick={() => toggleChecklistItem(index)}
+                        className={`w-4 h-4 border-2 rounded-sm flex items-center justify-center transition-colors ${
+                          typeof item === "object" && item.isMarked
+                            ? "bg-primary border-primary"
+                            : "border-muted-foreground hover:border-primary"
+                        }`}
+                      >
+                        {typeof item === "object" && item.isMarked && (
+                          <svg
+                            className="w-3 h-3 text-primary-foreground"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
+                      </button>
                     )}
                     <Input
-                      value={item}
+                      value={typeof item === "string" ? item : item.text}
                       onChange={(e) => updateContentItem(index, e.target.value)}
                       placeholder={`${
                         type === "bullet" ? "Bullet point" : "Checklist item"
                       } ${index + 1}...`}
-                      className="flex-1"
+                      className={`flex-1 ${
+                        type === "checklist" &&
+                        typeof item === "object" &&
+                        item.isMarked
+                          ? "line-through text-muted-foreground"
+                          : ""
+                      }`}
                     />
                   </div>
                   {content.length > 1 && (

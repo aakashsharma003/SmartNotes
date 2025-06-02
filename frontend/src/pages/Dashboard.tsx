@@ -101,21 +101,23 @@ export default function Dashboard() {
     return (
       <div className="container mx-auto p-4 space-y-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">My Notes</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            My Notes
+          </h1>
           <UserButton />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[...Array(6)].map((_, i) => (
             <Card key={i} className="animate-pulse">
               <CardHeader>
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <div className="h-3 bg-gray-200 rounded"></div>
-                  <div className="h-3 bg-gray-200 rounded w-5/6"></div>
-                  <div className="h-3 bg-gray-200 rounded w-4/6"></div>
+                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-4/6"></div>
                 </div>
               </CardContent>
             </Card>
@@ -131,14 +133,16 @@ export default function Dashboard() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold dark:text-white">My Notes</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              My Notes
+            </h1>
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setProfileDialogOpen(true)}
-                className="flex items-center gap-2 transition-all duration-200 hover:scale-105"
+                className="flex items-center gap-2 transition-all duration-200 hover:scale-105 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
               >
                 <User className="w-4 h-4" />
                 Profile
@@ -147,7 +151,7 @@ export default function Dashboard() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-all duration-200 hover:scale-105"
+                  className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 hover:scale-105"
                 >
                   <LogOut className="w-4 h-4" />
                   Sign Out
@@ -163,7 +167,7 @@ export default function Dashboard() {
               />
             </div>
           </div>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground dark:text-gray-400">
             Welcome back,{" "}
             {user?.firstName || user?.emailAddresses[0]?.emailAddress}! You have{" "}
             {notes.length} {notes.length === 1 ? "note" : "notes"}
@@ -172,7 +176,7 @@ export default function Dashboard() {
         <div className="flex gap-2">
           <Button
             onClick={handleCreateNote}
-            className="w-full sm:w-auto transition-all duration-200 hover:scale-105 hover:shadow-md"
+            className="w-full sm:w-auto transition-all duration-200 hover:scale-105 hover:shadow-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
           >
             <Plus className="w-4 h-4 mr-2" />
             Write Note
@@ -180,7 +184,7 @@ export default function Dashboard() {
           <Button
             onClick={() => setCreateDialogOpen(true)}
             variant="outline"
-            className="w-full sm:w-auto transition-all duration-200 hover:scale-105 hover:shadow-md"
+            className="w-full sm:w-auto transition-all duration-200 hover:scale-105 hover:shadow-md border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             <Plus className="w-4 h-4 mr-2" />
             Quick Note
@@ -189,21 +193,27 @@ export default function Dashboard() {
       </div>
 
       {notes.length === 0 ? (
-        <Card className="text-center py-12">
+        <Card className="text-center py-12 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <CardContent>
-            <FileText className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No notes yet</h3>
-            <p className="text-muted-foreground mb-4">
+            <FileText className="w-12 h-12 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
+            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
+              No notes yet
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400 mb-4">
               Create your first note to get started organizing your thoughts
             </p>
             <div className="flex gap-2 justify-center">
-              <Button onClick={handleCreateNote}>
+              <Button
+                onClick={handleCreateNote}
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Write Your First Note
               </Button>
               <Button
                 onClick={() => setCreateDialogOpen(true)}
                 variant="outline"
+                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 Quick Note
               </Button>
@@ -215,22 +225,25 @@ export default function Dashboard() {
           {notes.map((note) => (
             <Card
               key={note._id}
-              className="hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:-translate-y-1 hover:scale-[1.02] animate-in fade-in-50 slide-in-from-bottom-3"
+              className="hover:shadow-lg dark:hover:shadow-gray-900/30 transition-all duration-300 cursor-pointer transform hover:-translate-y-1 hover:scale-[1.02] animate-in fade-in-50 slide-in-from-bottom-3 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
               onClick={() => navigate(`/note/${note._id}`)}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
-                    <CardTitle className="text-lg truncate">
+                    <CardTitle className="text-lg truncate text-gray-900 dark:text-white">
                       {note.title}
                     </CardTitle>
-                    <CardDescription className="flex items-center gap-2 mt-1">
+                    <CardDescription className="flex items-center gap-2 mt-1 text-gray-500 dark:text-gray-400">
                       {note.type === "bullet" ? (
                         <FileText className="w-4 h-4" />
                       ) : (
                         <CheckSquare className="w-4 h-4" />
                       )}
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge
+                        variant="secondary"
+                        className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                      >
                         {note.type === "bullet" ? "Bullet Points" : "Checklist"}
                       </Badge>
                     </CardDescription>
@@ -243,7 +256,7 @@ export default function Dashboard() {
                         e.stopPropagation();
                         handleEditNote(note);
                       }}
-                      className="h-8 w-8 p-0 transition-all duration-200 hover:scale-110 hover:bg-accent"
+                      className="h-8 w-8 p-0 transition-all duration-200 hover:scale-110 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
                     >
                       <Edit className="w-4 h-4" />
                     </Button>
@@ -254,7 +267,7 @@ export default function Dashboard() {
                         e.stopPropagation();
                         deleteNote(note._id);
                       }}
-                      className="h-8 w-8 p-0 text-destructive hover:text-destructive transition-all duration-200 hover:scale-110 hover:bg-destructive/10"
+                      className="h-8 w-8 p-0 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-all duration-200 hover:scale-110 hover:bg-red-50 dark:hover:bg-red-900/20"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -267,24 +280,58 @@ export default function Dashboard() {
                     <div key={index} className="flex items-start gap-2 text-sm">
                       {note.type === "bullet" ? (
                         <>
-                          <span className="text-muted-foreground mt-1">•</span>
-                          <span className="flex-1 truncate">{item}</span>
+                          <span className="text-gray-400 dark:text-gray-500 mt-1">
+                            •
+                          </span>
+                          <span className="flex-1 truncate text-gray-700 dark:text-gray-300">
+                            {typeof item === "string" ? item : item.text}
+                          </span>
                         </>
                       ) : (
                         <>
-                          <CheckSquare className="w-4 h-4 mt-0.5 text-muted-foreground flex-shrink-0" />
-                          <span className="flex-1 truncate">{item}</span>
+                          <div className="flex items-center mt-0.5">
+                            <div
+                              className={`w-4 h-4 border-2 rounded-sm flex items-center justify-center ${
+                                typeof item === "object" && item.isMarked
+                                  ? "bg-blue-600 dark:bg-blue-500 border-blue-600 dark:border-blue-500"
+                                  : "border-gray-400 dark:border-gray-500"
+                              }`}
+                            >
+                              {typeof item === "object" && item.isMarked && (
+                                <svg
+                                  className="w-3 h-3 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              )}
+                            </div>
+                          </div>
+                          <span
+                            className={`flex-1 truncate ${
+                              typeof item === "object" && item.isMarked
+                                ? "line-through text-gray-400 dark:text-gray-500"
+                                : "text-gray-700 dark:text-gray-300"
+                            }`}
+                          >
+                            {typeof item === "string" ? item : item.text}
+                          </span>
                         </>
                       )}
                     </div>
                   ))}
                   {note.content.length > 3 && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-400 dark:text-gray-500">
                       +{note.content.length - 3} more items
                     </p>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground mt-3">
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">
                   {new Date(note.updatedAt).toLocaleDateString()}
                 </p>
               </CardContent>

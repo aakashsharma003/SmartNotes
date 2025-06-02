@@ -73,29 +73,33 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  /* Smooth scrollbar */
+  /* Enhanced dark mode scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-muted/30;
+    @apply bg-gray-100 dark:bg-gray-800;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground/30 rounded-full;
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
     transition: background-color 0.2s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/50;
+    @apply bg-gray-400 dark:bg-gray-500;
   }
 
   /* Firefox scrollbar */
   * {
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+    scrollbar-color: rgb(156 163 175) transparent;
+  }
+
+  .dark * {
+    scrollbar-color: rgb(75 85 99) transparent;
   }
 }
 
@@ -121,7 +125,7 @@
     animation: slide-in-from-top 0.2s ease-out;
   }
 
-  /* Smooth hover effects */
+  /* Dark mode specific hover effects */
   .hover-lift {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -135,7 +139,7 @@
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
   }
 
-  /* Button enhancements */
+  /* Button enhancements for dark mode */
   .btn-smooth {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -145,12 +149,16 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
+  .dark .btn-smooth:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
   .btn-smooth:active {
     transform: translateY(0);
     transition-duration: 0.1s;
   }
 
-  /* Card animations */
+  /* Card animations with dark mode support */
   .card-animate {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -164,27 +172,46 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   }
 
-  /* Loading states */
-  .loading-shimmer {
-    background: linear-gradient(
-      90deg,
-      hsl(var(--muted)) 25%,
-      hsl(var(--muted-foreground) / 0.1) 50%,
-      hsl(var(--muted)) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+  /* Loading states with dark mode */
+  .loading {
+    opacity: 0.6;
+    pointer-events: none;
   }
 
-  /* Focus states */
+  .spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid theme("colors.gray.200");
+    border-top: 2px solid theme("colors.gray.900");
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .dark .spinner {
+    border-color: theme("colors.gray.700");
+    border-top-color: theme("colors.gray.100");
+  }
+
+  /* Focus states with dark mode */
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
     transition: box-shadow 0.2s ease;
   }
 
-  /* Text animations */
+  .dark .focus-ring {
+    @apply focus-visible:ring-blue-400 focus-visible:ring-offset-gray-900;
+  }
+
+  /* Text animations with dark mode support */
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--foreground)), hsl(var(--muted-foreground)));
+    background: linear-gradient(135deg, theme("colors.gray.900"), theme("colors.gray.600"));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .dark .text-gradient {
+    background: linear-gradient(135deg, theme("colors.gray.100"), theme("colors.gray.400"));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -219,7 +246,7 @@
     animation-delay: 0.6s;
   }
 
-  /* Pulse animation for loading */
+  /* Pulse animation for loading with dark mode */
   .pulse-slow {
     animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
@@ -229,7 +256,7 @@
     animation: bounce-gentle 2s infinite;
   }
 
-  /* Glow effects */
+  /* Glow effects with dark mode support */
   .glow {
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
     transition: box-shadow 0.3s ease;
@@ -245,6 +272,75 @@
 
   .dark .glow:hover {
     box-shadow: 0 0 30px rgba(147, 197, 253, 0.5);
+  }
+
+  /* Note editor specific styles */
+  .note-editor-content {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white;
+  }
+
+  .note-editor-input {
+    @apply bg-transparent border-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400;
+  }
+
+  .note-editor-input:focus {
+    @apply ring-0 outline-none;
+  }
+
+  .note-editor-toolbar {
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-200 dark:border-gray-800;
+  }
+
+  .note-editor-button {
+    @apply text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-200;
+  }
+
+  .note-editor-checkbox {
+    @apply border-gray-400 dark:border-gray-500 hover:border-blue-600 dark:hover:border-blue-400;
+  }
+
+  .note-editor-checkbox.checked {
+    @apply bg-blue-600 dark:bg-blue-500 border-blue-600 dark:border-blue-500;
+  }
+
+  .note-editor-bullet {
+    @apply bg-blue-500 dark:bg-blue-400;
+  }
+
+  .note-editor-preview {
+    @apply bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700;
+  }
+
+  /* Backdrop blur support */
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  /* Custom prose styles for dark mode */
+  .prose-dark {
+    @apply text-gray-300;
+  }
+
+  .prose-dark h1,
+  .prose-dark h2,
+  .prose-dark h3,
+  .prose-dark h4,
+  .prose-dark h5,
+  .prose-dark h6 {
+    @apply text-gray-100;
+  }
+
+  .prose-dark strong {
+    @apply text-gray-200;
+  }
+
+  .prose-dark code {
+    @apply text-gray-300 bg-gray-800;
+  }
+
+  .prose-dark blockquote {
+    @apply text-gray-400 border-gray-600;
   }
 }
 
@@ -332,6 +428,15 @@
   }
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -369,16 +474,112 @@
   .no-print {
     display: none !important;
   }
+
+  .note-editor-toolbar,
+  .fixed {
+    display: none !important;
+  }
 }
 
-/* Selection styles */
+/* Selection styles with dark mode */
 ::selection {
-  background-color: hsl(var(--primary) / 0.2);
-  color: hsl(var(--primary-foreground));
+  background-color: rgba(59, 130, 246, 0.2);
+  color: inherit;
+}
+
+.dark ::selection {
+  background-color: rgba(147, 197, 253, 0.3);
+  color: inherit;
 }
 
 /* Focus visible for better accessibility */
 .focus-visible:focus-visible {
-  outline: 2px solid hsl(var(--ring));
+  outline: 2px solid theme("colors.blue.500");
   outline-offset: 2px;
+}
+
+.dark .focus-visible:focus-visible {
+  outline-color: theme("colors.blue.400");
+}
+
+/* Custom input and textarea styles for dark mode */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  @apply border-blue-500 dark:border-blue-400 ring-blue-500 dark:ring-blue-400;
+}
+
+/* Button variants for dark mode */
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100;
+}
+
+.btn-ghost {
+  @apply bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300;
+}
+
+/* Card styles for dark mode */
+.card {
+  @apply bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-gray-900/20;
+}
+
+.card:hover {
+  @apply shadow-md dark:shadow-gray-900/30;
+}
+
+/* Badge styles for dark mode */
+.badge {
+  @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700;
+}
+
+.badge-primary {
+  @apply bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 border-blue-200 dark:border-blue-800;
+}
+
+.badge-secondary {
+  @apply bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600;
+}
+
+/* Toast styles for dark mode */
+.toast {
+  @apply bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100;
+}
+
+.toast-destructive {
+  @apply bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-900 dark:text-red-100;
+}
+
+/* Dialog styles for dark mode */
+.dialog-overlay {
+  @apply bg-black/50 dark:bg-black/70;
+}
+
+.dialog-content {
+  @apply bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800;
+}
+
+/* Dropdown menu styles for dark mode */
+.dropdown-content {
+  @apply bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-gray-900/30;
+}
+
+.dropdown-item {
+  @apply text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700;
+}
+
+/* Popover styles for dark mode */
+.popover-content {
+  @apply bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-gray-900/30;
 }
