@@ -58,7 +58,7 @@ Notes App is a full-stack application for creating and managing notes in bullet 
 
 ```shellscript
 git clone https://github.com/yourusername/notes-app.git
-cd notes-app
+cd SmartNotes
 ```
 
 2. **Set up environment variables**
