@@ -1,4 +1,4 @@
-# Notes App - Full Stack Application
+# SmartNotes App - Full Stack Application
 
 ### 📝 Overview
 
